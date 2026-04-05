@@ -1,81 +1,81 @@
 # PocketPure
-## 1. Git運用ルール
+## 1. Git Usage Rules
 
-本プロジェクトでは、Googleの開発哲学に基づいた「小規模で頻繁なコミット」と「明確な履歴管理」を重視し、**シンプルなTrunk-Based Development（トランクベース開発）**を採用します。
+Emphasizing "small, frequent commits" and "clear history management," we adopt a **simple Trunk-Based Development** approach.
 
-### 1.1. ブランチ戦略
-- `main` ブランチは**常に動く（デプロイ可能な）状態**を維持する。
-- 作業は必ず `main` から feature ブランチを切って行う。
-- **ブランチの命名規則:** `プレフィックス/短い説明`
-  - `feat/add-transaction-api` (新機能)
-  - `fix/date-format-bug` (バグ修正)
-  - `refactor/ui-components` (リファクタリング)
+### 1.1. Branching Strategy
+- The `main` branch must always be kept in a **working (deployable) state**.
+- Always create a feature branch from `main` when working.
+- **Branch Naming Convention:** `prefix/short-description`
+  - `feat/add-transaction-api` (New feature)
+  - `fix/date-format-bug` (Bug fix)
+  - `refactor/ui-components` (Refactoring)
 
-### 1.2. コミットメッセージのルール (Conventional Commits)
-「何をしたか」ではなく**「なぜ変更したか・何がどう変わったか」**が後から見て1秒でわかるように書くこと。
+### 1.2. Commit Message Rules (Conventional Commits)
+Write messages so that someone looking back can understand in one second **"why the change was made and what exactly changed,"** rather than just "what was done."
 
-### 命名フォーマット
-- **ブランチ名:** `タイプ/短い英単語の説明` （例: `feat/add-csv-upload`）
-- **コミットメッセージ:** `タイプ: 変更内容の要約` （例: `feat: CSVファイルのアップロード機能を追加`）
+### Naming Format
+- **Branch Name:** `type/short-english-description` (e.g., `feat/add-csv-upload`)
+- **Commit Message:** `type: summary of changes` (e.g., `feat: Add CSV file upload feature`)
 
-### プレフィックス（タイプ）一覧
+### Prefix (Type) List
 
-| タイプ | 概要 | 具体的な使用例（コミットメッセージ） |
+| Type | Overview | Specific Example (Commit Message) |
 | :--- | :--- | :--- |
-| **`feat`** | 新機能の追加 (Feature) | `feat: 画面から明細を手動入力するフォームを追加` |
-| **`fix`** | バグの修正 (Bug Fix) | `fix: 金額にマイナス値が登録できてしまう不具合を修正` |
-| **`docs`** | ドキュメントのみの変更 | `docs: READMEにAPIのエンドポイント一覧を追記` |
-| **`style`** | コードの動作に影響しないフォーマット変更 | `style: Prettier/Ruffによるコードの自動整形` |
-| **`refactor`**| リファクタリング (機能追加やバグ修正を含まない) | `refactor: fetchを使ったAPI通信処理を共通関数に分離` |
-| **`perf`** | パフォーマンス向上のための変更 | `perf: DBからの明細一覧取得クエリを最適化` |
-| **`test`** | テストコードの追加・既存テストの修正 | `test: 合計金額の計算ロジックに対する単体テストを追加` |
-| **`build`** | ビルドシステムや外部依存関係の変更 | `build: Viteの設定変更、不要なnpmパッケージの削除` |
-| **`ci`** | CI/CDの設定ファイルやスクリプトの変更 | `ci: GitHub Actionsによる自動デプロイ設定を追加` |
-| **`chore`** | その他、ソースやテストに影響しない雑務 | `chore: .gitignoreを更新、エディタ設定の追加` |
+| **`feat`** | New feature addition | `feat: Add a form for manual transaction entry from the screen` |
+| **`fix`** | Bug fix | `fix: Fix a bug where negative amounts could be registered` |
+| **`docs`** | Documentation changes only | `docs: Add API endpoint list to README` |
+| **`style`** | Formatting changes that do not affect code execution | `style: Auto-format code using Prettier/Ruff` |
+| **`refactor`**| Refactoring (excluding feature additions or bug fixes) | `refactor: Extract API communication processing using fetch into a common function` |
+| **`perf`** | Changes to improve performance | `perf: Optimize the query for fetching the transaction list from the DB` |
+| **`test`** | Adding test code or modifying existing tests | `test: Add unit tests for the total amount calculation logic` |
+| **`build`** | Changes to the build system or external dependencies | `build: Change Vite configuration, remove unused npm packages` |
+| **`ci`** | Changes to CI/CD configuration files or scripts | `ci: Add automatic deployment setup using GitHub Actions` |
+| **`chore`** | Other chores that do not affect the source code or tests | `chore: Update .gitignore, add editor configurations` |
 
-### 1.3. マージルール
-- 1.5時間の作業の終わりには、必ずコミットしてPushする（WIP: Work In Progress でも可）。
-- ひとつの機能（垂直スライス）が完成したら `main` へ Pull Request (PR) を作成する。
-- マージする際は **「Squash and Merge」** を推奨。細かいWIPコミットを1つにまとめ、`main` の履歴を綺麗に保つ。
+### 1.3. Merge Rules
+- At the end of your 1.5-hour work session, always commit and push (WIP: Work In Progress is acceptable).
+- Once a single feature (vertical slice) is complete, create a Pull Request (PR) to `main`.
+- When merging, **"Squash and Merge"** is recommended. Combine small WIP commits into one to keep the `main` history clean.
 
 ---
 
-## 2. ディレクトリ構成
+## 2. Directory Structure
 
-バックエンド（FastAPI）とフロントエンド（React+Vite）を明確に分離したモノレポ構成とします。学習コストと開発スピード（1.5h/day）を最優先し、過度な階層化（Atomic Design等）は避けたフラットで実用的な設計です。
+We will use a monorepo structure with a clear separation between the backend (FastAPI) and frontend (React+Vite). Prioritizing learning cost and development speed (1.5h/day), this is a flat, practical design that avoids excessive nesting (such as Atomic Design).
 
 ```text
-credit-card-tracker/  (プロジェクトルート)
+credit-card-tracker/  (Project Root)
 │
 ├── backend/                  # FastAPI (Python)
 │   ├── Dockerfile
 │   ├── requirements.txt
 │   └── app/
-│       ├── main.py           # アプリケーションのエントリーポイント
-│       ├── database.py       # DB接続設定 (SQLAlchemyなど)
-│       ├── models/           # DBのテーブル定義 (SQLモデル)
+│       ├── main.py           # Application entry point
+│       ├── database.py       # DB connection settings (SQLAlchemy, etc.)
+│       ├── models/           # DB table definitions (SQL models)
 │       │   └── transaction.py
-│       ├── schemas/          # APIの入出力の型定義 (Pydanticモデル)
+│       ├── schemas/          # API input/output type definitions (Pydantic models)
 │       │   └── transaction.py
-│       └── api/              # APIエンドポイント (ルーター)
+│       └── api/              # API endpoints (Routers)
 │           └── transactions.py
 │
 ├── frontend/                 # React + Vite (JavaScript/TypeScript)
 │   ├── package.json
 │   ├── vite.config.js
 │   └── src/
-│       ├── main.jsx          # Reactのマウントポイント
-│       ├── App.jsx           # ルーティングや大枠のレイアウト
-│       ├── api/              # fetch通信の共通処理 (axiosの代替)
+│       ├── main.jsx          # React mount point
+│       ├── App.jsx           # Routing and main layout
+│       ├── api/              # Common fetch communication logic (axios alternative)
 │       │   └── client.js
-│       ├── components/       # UIコンポーネント (Atomic Design不使用・フラット配置)
+│       ├── components/       # UI components (No Atomic Design, flat placement)
 │       │   ├── Button.jsx
 │       │   ├── Button.module.scss
 │       │   ├── TransactionForm.jsx
 │       │   └── TransactionTable.jsx
-│       └── styles/           # グローバルなCSS/SCSS
+│       └── styles/           # Global CSS/SCSS
 │           └── global.scss
 │
-├── docker-compose.yml        # DB(PostgreSQL)やバックエンドをまとめて起動する用
+├── docker-compose.yml        # For launching DB (PostgreSQL) and backend together
 ├── .gitignore
-└── README.md                 # このファイル
+└── README.md                 # This file
