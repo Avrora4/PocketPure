@@ -1,5 +1,5 @@
 ---
-name: Feature request
+name: The standard issue template
 about: Suggest an idea for this project
 title: ''
 labels: ''
