@@ -61,6 +61,28 @@ Write messages so that someone looking back can understand in one second **"why 
 - Once a single feature (vertical slice) is complete, create a Pull Request (PR) to `main`.
 - When merging, **"Squash and Merge"** is recommended. Combine small WIP commits into one to keep the `main` history clean.
 
+### 1.7. Pull Request (PR) Rules
+#### 1.7.1. PR Title Naming Convention
+Since we use "Squash and Merge", the PR title will become the final commit message on the `main` branch. Therefore, the PR title **must follow the exact same Conventional Commits format** as your commit messages. Adding the Issue number at the end is highly recommended.
+
+**Format:** `type: Brief summary of changes (#IssueNumber)`
+
+**Examples:**
+- `feat: Add manual transaction entry form (#12)`
+- `fix: Prevent negative values in amount field (#15)`
+- `refactor: Centralize API fetch logic (#18)`
+
+**Why this matters:**
+When you look back at the Git history months later, you will see a clean, readable list of exactly what was introduced and which Issue triggered it, without the noise of temporary WIP commits.
+As a solo developer with limited time, PRs serve as a final checkpoint before merging code into `main` and as documentation for your future self.
+
+- **Keep it Small:** A PR should ideally cover one specific Issue (one vertical slice). Avoid bundling unrelated features.
+- **Self-Review:** Before merging, review your own code on GitHub's "Files changed" tab. Check for leftover `console.log`s, typos, and ensure it meets the Acceptance Criteria of the original Issue.
+- **Draft PRs:** If your 1.5-hour session ends before a feature is complete, push your branch and open a "Draft PR". This is a great way to save your progress and leave notes on where to resume tomorrow.
+
+### 1.8. PR Description (Template)
+Use the following template to ensure the "Why" and "How" of your changes are clearly documented. You can automate this by saving the text below as `.github/PULL_REQUEST_TEMPLATE.md` in your repository.
+
 ---
 
 ## 2. Directory Structure
