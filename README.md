@@ -1,9 +1,32 @@
 # PocketPure
-## 1. Git Usage Rules
+
+## 1. Git and Issue Usage Rules
 
 Emphasizing "small, frequent commits" and "clear history management," we adopt a **simple Trunk-Based Development** approach.
 
-### 1.1. Branching Strategy
+### 1.1. Issue Management Rules
+In this project, to eliminate hesitation and ensure you can immediately start your 1.5 hours of daily work, always create an Issue for a task before starting development.
+
+### 1.2. Issue Title Naming Conventions
+Add the same "prefix (type tag)" used for branches and commits to the beginning of the title so that the nature of the task is clear at a glance in the list.
+
+**Format:** `[Type] Brief description of the task`
+
+| Type Tag | Overview (Purpose) | Title Example | Corresponding Branch Name |
+| :--- | :--- | :--- | :--- |
+| **`[feat]`** | Development of new features | `[feat] Add CSV upload feature` | `feat/add-csv-upload` |
+| **`[fix]`** | Bug or defect fixes | `[fix] Fix issue with negative amounts` | `fix/amount-validation` |
+| **`[refactor]`**| Code organization and improvement | `[refactor] Centralize API communication logic`| `refactor/api-client` |
+| **`[chore]`** | Chores like tool setup or research | `[chore] Initial setup of Linter/Formatter`| `chore/setup-linter` |
+
+---
+
+### 1.3. Issue Content (Template)
+An Issue is a "work instruction for your future self." At a minimum, describe "What (Overview)", "Why (Context)", and "Definition of Done (Acceptance Criteria)".
+
+Please copy the template to create an Issue. (*If using GitHub, saving this as `.github/ISSUE_TEMPLATE/task.md` will automatically populate the input field.)
+
+### 1.4. Branching Strategy
 - The `main` branch must always be kept in a **working (deployable) state**.
 - Always create a feature branch from `main` when working.
 - **Branch Naming Convention:** `prefix/short-description`
@@ -11,14 +34,14 @@ Emphasizing "small, frequent commits" and "clear history management," we adopt a
   - `fix/date-format-bug` (Bug fix)
   - `refactor/ui-components` (Refactoring)
 
-### 1.2. Commit Message Rules (Conventional Commits)
+### 1.5. Commit Message Rules (Conventional Commits)
 Write messages so that someone looking back can understand in one second **"why the change was made and what exactly changed,"** rather than just "what was done."
 
-### Naming Format
+**Naming Format**
 - **Branch Name:** `type/short-english-description` (e.g., `feat/add-csv-upload`)
 - **Commit Message:** `type: summary of changes` (e.g., `feat: Add CSV file upload feature`)
 
-### Prefix (Type) List
+**Prefix (Type) List**
 
 | Type | Overview | Specific Example (Commit Message) |
 | :--- | :--- | :--- |
@@ -33,7 +56,7 @@ Write messages so that someone looking back can understand in one second **"why 
 | **`ci`** | Changes to CI/CD configuration files or scripts | `ci: Add automatic deployment setup using GitHub Actions` |
 | **`chore`** | Other chores that do not affect the source code or tests | `chore: Update .gitignore, add editor configurations` |
 
-### 1.3. Merge Rules
+### 1.6. Merge Rules
 - At the end of your 1.5-hour work session, always commit and push (WIP: Work In Progress is acceptable).
 - Once a single feature (vertical slice) is complete, create a Pull Request (PR) to `main`.
 - When merging, **"Squash and Merge"** is recommended. Combine small WIP commits into one to keep the `main` history clean.
