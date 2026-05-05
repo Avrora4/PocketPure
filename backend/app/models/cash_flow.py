@@ -29,8 +29,8 @@ class IndividualCashFlow(Base):
     # (e.g., 0 for income, 1 for expense)
     direction: Mapped[int] = mapped_column(SmallInteger, nullable=False)
 
-    # walled_id : Record the ID of the wallet associated with the cash flow entry
-    walled_id: Mapped[int] = mapped_column(Integer, nullable=False)
+    # wallet_id : Record the ID of the wallet associated with the cash flow entry
+    wallet_id: Mapped[int] = mapped_column(Integer, nullable=False)
 
     # transaction_date : Record the using cash date and time of the cash flow entry
     transaction_date: Mapped[datetime] = mapped_column(DateTime, nullable=False)
