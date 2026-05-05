@@ -5,16 +5,16 @@ from sqlalchemy.orm import Session
 from app.models.cash_flow import IndividualCashFlow
 
 
-def get_indivisual_cash_flows(session: Session, user_id: int):
+def get_individual_cash_flows(session: Session, user_id: int):
     """
-    Retrieves the indivisual cash flows for a given user.
+    Retrieves the individual cash flows for a given user.
 
     Args:
         Session: The database session to use for the query.
         user_id (int): The ID of the user.
 
     Returns:
-        list: A list of indivisual cash flows for the user.
+        list: A list of individual cash flows for the user.
     """
 
     cash_flows = session.query(IndividualCashFlow).filter(
@@ -38,7 +38,7 @@ def create_test_data_individual_cash_flow(session: Session):
         comment (str, optional): Additional comments or notes about the cash flow entry.
 
     Returns:
-        IndivisualCashFlow: The created individual cash flow entry.
+        IndividualCashFlow: The created individual cash flow entry.
     """
 
     new_cash_flow = IndividualCashFlow(
@@ -46,8 +46,8 @@ def create_test_data_individual_cash_flow(session: Session):
         name="Test Cash Flow",
         amount=1000,
         direction=0,
-        walled_id=1,
-        transaction_date="2024-01-01 12:00:00",
+        wallet_id=1,
+        transaction_date=datetime.now(),
         comment="This is a test cash flow entry.",
         created_at=datetime.now(),
         updated_at=datetime.now(),

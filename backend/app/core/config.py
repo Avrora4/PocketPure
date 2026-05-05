@@ -18,7 +18,7 @@ class Settings(BaseSettings):
     POSTGRES_HOST: str = "localhost"
     POSTGRES_PORT: int = 5432
     POSTGRES_USER: str = "pocket_user"
-    POSTGRES_PASSWORD: str = "pocket_pass"
+    POSTGRES_PASSWORD: str
     POSTGRES_DB: str = "pocket_db"
 
     # Database URL for PostgreSQL

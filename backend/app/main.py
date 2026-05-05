@@ -27,7 +27,7 @@ def health_check():
 
 
 @app.post("/create_individual_cash_flow")
-def create_indivisual_cash_flow_endpoint(
+def create_individual_cash_flow_endpoint(
     session: Session = Depends(db_manager.get_session),
 ):
     cash_flows_repository.create_test_data_individual_cash_flow(session)
