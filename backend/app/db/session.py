@@ -53,7 +53,13 @@ class DatabaseSessionManager:
             except OperationalError as e:
                 if attempt == 9:
                     raise
-                print(f"DB not ready (attempt {attempt + 1}/10), retrying in 3s... {e}")
+                self.logger.warning(
+                    "DB not ready (attempt %d/%d), retrying in %ss: %s",
+                    attempt + 1,
+                    10,
+                    3,
+                    e,
+                )
                 time.sleep(3)
 
         self.logger.info("create_all finished")
