@@ -30,5 +30,5 @@ def health_check():
 def create_indivisual_cash_flow_endpoint(
     session: Session = Depends(db_manager.get_session),
 ):
-    cash_flows_repository.create_test_data_individual_cash_flow()
+    cash_flows_repository.create_test_data_individual_cash_flow(session)
     return {"message": "Individual cash flow created successfully"}
