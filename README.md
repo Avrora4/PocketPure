@@ -39,7 +39,7 @@ Write messages so that someone looking back can understand in one second **"why 
 
 **Naming Format**
 - **Branch Name:** `type/short-english-description` (e.g., `feat/add-csv-upload`)
-- **Commit Message:** `type: summary of changes` (e.g., `feat: Add CSV file upload feature`)
+- **Commit Message:** `type: summary of changes[#issue-number]` (e.g., `feat: Add CSV file upload feature`)
 
 **Prefix (Type) List**
 
