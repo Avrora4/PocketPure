@@ -1,9 +1,8 @@
 from contextlib import asynccontextmanager
 
-from fastapi import Depends, FastAPI
-from sqlalchemy.orm import Session
+from fastapi import FastAPI
 
-import app.repositories.cash_flows_repository as cash_flows_repository
+from app.api.v1.endpoints import router
 from app.db.session import db_manager
 
 
@@ -15,6 +14,8 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan)
 
+app.include_router(router, prefix="/api/v1")
+
 
 @app.get("/")
 def read_root():
@@ -24,11 +25,3 @@ def read_root():
 @app.get("/health")
 def health_check():
     return {"status": "ok"}
-
-
-@app.post("/create_individual_cash_flow")
-def create_individual_cash_flow_endpoint(
-    session: Session = Depends(db_manager.get_session),
-):
-    cash_flows_repository.create_test_data_individual_cash_flow(session)
-    return {"message": "Individual cash flow created successfully"}

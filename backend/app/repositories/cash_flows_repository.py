@@ -1,11 +1,10 @@
-from datetime import datetime
-
 from sqlalchemy.orm import Session
 
 from app.models.cash_flow import IndividualCashFlow
+from app.schemas.cash_flow import IndividualCashFlowCreate, IndividualCashFlowUpdate
 
 
-def get_individual_cash_flows(session: Session, user_id: int):
+def read_individual_cash_flows(session: Session, user_id: int):
     """
     Retrieves the individual cash flows for a given user.
 
@@ -23,36 +22,83 @@ def get_individual_cash_flows(session: Session, user_id: int):
     return cash_flows.all()
 
 
-def create_test_data_individual_cash_flow(session: Session):
+def read_individual_cash_flows_by_id(session: Session, user_id: int, cash_flow_id: int):
+    """
+    Retrieves the individual cash flows for a given user.
+
+    Args:
+        Session: The database session to use for the query.
+        user_id (int): The ID of the user.
+        cash_flow_id (int): The ID of the cash flow entry.
+
+    Returns:
+        IndividualCashFlow: The individual cash flow entry for the user.
+    """
+
+    cash_flow = (
+        session.query(IndividualCashFlow)
+        .filter(
+            IndividualCashFlow.user_id == user_id, IndividualCashFlow.id == cash_flow_id
+        )
+        .first()
+    )
+    return cash_flow
+
+
+def create_individual_cash_flow(
+    session: Session, user_id: int, data: IndividualCashFlowCreate
+):
     """
     Creates a new individual cash flow entry in the database.
 
     Args:
-        user_id (int): The ID of the user associated with the cash flow entry.
-        name (str): The name or description of the cash flow entry.
-        amount (int): The amount of the cash flow entry.
-        direction (int): The direction of the cash flow entry
-        (e.g., 0 for income, 1 for expense).
-        wallet_id (int): The ID of the wallet associated with the cash flow entry.
-        transaction_date (datetime): The date and time of the cash flow transaction.
-        comment (str, optional): Additional comments or notes about the cash flow entry.
+        Session: The database session to use for the operation.
+        user_id (int): The ID of the user for whom the cash flow is being created.
+        data (IndividualCashFlowCreate): The data for the new cash flow entry.
 
     Returns:
         IndividualCashFlow: The created individual cash flow entry.
     """
 
-    new_cash_flow = IndividualCashFlow(
-        user_id=1,
-        name="Test Cash Flow",
-        amount=1000,
-        direction=0,
-        wallet_id=1,
-        transaction_date=datetime.now(),
-        comment="This is a test cash flow entry.",
-        created_at=datetime.now(),
-        updated_at=datetime.now(),
-    )
+    new_cash_flow = IndividualCashFlow(**data.model_dump(), user_id=user_id)
     session.add(new_cash_flow)
     session.commit()
     session.refresh(new_cash_flow)
+
     return new_cash_flow
+
+
+def update_individual_cash_flow(
+    session: Session, user_id: int, cash_flow_id: int, data: IndividualCashFlowUpdate
+):
+    """
+    Updates an existing individual cash flow entry in the database.
+
+    Args:
+        session (Session): The database session to use for the operation.
+        user_id (int): The ID of the user for whom the cash flow is being updated.
+        cash_flow_id (int): The ID of the cash flow entry to update.
+        data (IndividualCashFlowUpdate): The updated data for the cash flow entry.
+
+    Returns:
+        IndividualCashFlow:
+            The updated individual cash flow entry, or None if not found.
+    """
+    cash_flow = (
+        session.query(IndividualCashFlow)
+        .filter(
+            IndividualCashFlow.id == cash_flow_id, IndividualCashFlow.user_id == user_id
+        )
+        .first()
+    )
+    if not cash_flow:
+        return None
+
+    update_cash_flow = data.model_dump(exclude_unset=True)
+
+    for key, value in update_cash_flow.items():
+        setattr(cash_flow, key, value)
+
+    session.commit()
+    session.refresh(cash_flow)
+    return cash_flow
