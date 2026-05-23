@@ -8,7 +8,7 @@ class Base(DeclarativeBase):
     pass
 
 
-class IndividualCashFlow(Base):
+class IndividualCashFlowBase(Base):
     __tablename__ = "individual_cash_flow"
 
     # Define the columns for the individual_cash_flow table
@@ -39,7 +39,14 @@ class IndividualCashFlow(Base):
     comment: Mapped[str] = mapped_column(Text, nullable=True)
 
     # created_at : Record the date and time when the cash flow entry was created
-    created_at: Mapped[datetime] = mapped_column(DateTime, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, default=datetime.now(datetime.UTC)
+    )
 
     # updated_at : Record the date and time when the cash flow entry was last updated
-    updated_at: Mapped[datetime] = mapped_column(DateTime, nullable=False)
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        nullable=False,
+        default=datetime.now(datetime.UTC),
+        onupdate=datetime.now(datetime.UTC),
+    )
