@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import BigInteger, DateTime, Integer, SmallInteger, String, Text, func
+from sqlalchemy import BigInteger, DateTime, Integer, SmallInteger, String, Text
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
 
@@ -8,7 +8,7 @@ class Base(DeclarativeBase):
     pass
 
 
-class IndividualCashFlow(Base):
+class IndividualCashFlowBase(Base):
     __tablename__ = "individual_cash_flow"
 
     # Define the columns for the individual_cash_flow table
@@ -40,10 +40,13 @@ class IndividualCashFlow(Base):
 
     # created_at : Record the date and time when the cash flow entry was created
     created_at: Mapped[datetime] = mapped_column(
-        DateTime, nullable=False, server_default=func.now()
+        DateTime(timezone=True), nullable=False, default=datetime.now(datetime.UTC)
     )
 
     # updated_at : Record the date and time when the cash flow entry was last updated
     updated_at: Mapped[datetime] = mapped_column(
-        DateTime, nullable=False, server_default=func.now(), onupdate=func.now()
+        DateTime(timezone=True),
+        nullable=False,
+        default=datetime.now(datetime.UTC),
+        onupdate=datetime.now(datetime.UTC),
     )

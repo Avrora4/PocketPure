@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from app.db.session import db_manager
@@ -8,7 +9,6 @@ from app.schemas import cash_flow as schemas
 router = APIRouter(
     prefix="/cash-flows",
     tags=["users"],
-    dependencies=[Depends(db_manager.get_session)],
     responses={404: {"description": "Not found"}},
 )
 
@@ -22,9 +22,6 @@ def read_individual_cash_flows(
     user_id: int, session: Session = Depends(db_manager.get_session)
 ):
     cash_flow = repo.read_individual_cash_flows(session, user_id)
-
-    if not cash_flow:
-        raise HTTPException(status_code=404, detail="Cash flows not found")
     return cash_flow
 
 
@@ -38,8 +35,8 @@ def read_individual_cash_flows_by_id(
 ):
     cash_flow = repo.read_individual_cash_flows_by_id(session, user_id, cash_flow_id)
 
-    if not cash_flow:
-        raise HTTPException(status_code=404, detail="Cash flows not found")
+    if not cash_flow:  # ← 404チェックを追加
+        raise HTTPException(status_code=404, detail="Cash flow not found")
     return cash_flow
 
 
@@ -53,12 +50,13 @@ def create_individual_cash_flow(
     data: schemas.IndividualCashFlowCreate,
     session: Session = Depends(db_manager.get_session),
 ):
-    result = repo.create_individual_cash_flow(session, user_id, data)
-
-    if not result:
-        raise HTTPException(status_code=400, detail="Failed to create cash flow")
-
-    return result
+    try:
+        result = repo.create_individual_cash_flow(session, user_id, data)
+        return result
+    except IntegrityError:
+        raise HTTPException(
+            status_code=400, detail="Invalid wallet_id or constraint violation"
+        )
 
 
 @router.put(
@@ -72,7 +70,16 @@ def update_individual_cash_flow(
     data: schemas.IndividualCashFlowUpdate,
     session: Session = Depends(db_manager.get_session),
 ):
-    result = repo.update_individual_cash_flow(session, user_id, cash_flow_id, data)
-    if not result:
-        raise HTTPException(status_code=404, detail="Cash flow not found")
-    return result
+    try:
+        result = repo.update_individual_cash_flow(session, user_id, cash_flow_id, data)
+        if not result:
+            raise HTTPException(status_code=404, detail="Cash flow not found")
+        return result
+    except IntegrityError:
+        raise HTTPException(
+            status_code=400, detail="Invalid data or constraint violation"
+        )
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
